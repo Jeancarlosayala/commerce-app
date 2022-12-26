@@ -1,0 +1,88 @@
+[
+  {
+    "id": 1,
+    "title": "Sugerencias",
+    "description": "Te sugerimos",
+    "restaurantCategories": [
+      {
+        "id": 1,
+        "imgUrl": "https://links.papareact.com/gn7",
+        "title": "Prueba 1",
+        "rating": 3.2,
+        "genre": "Italiana",
+        "address": "",
+        "short_description": "",
+        "dishes": "",
+        "long": "",
+        "lat": ""
+      },
+      {
+        "id": 2,
+        "imgUrl": "https://links.papareact.com/gn7",
+        "title": "Prueba 2",
+        "rating": 5,
+        "genre": "China",
+        "address": "",
+        "short_description": "",
+        "dishes": "",
+        "long": "",
+        "lat": ""
+      },
+      {
+        "id": 3,
+        "imgUrl": "https://links.papareact.com/gn7",
+        "title": "prueba 3",
+        "rating": 4.1,
+        "genre": "Mexicana",
+        "address": "",
+        "short_description": "",
+        "dishes": "",
+        "long": "",
+        "lat": ""
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Intereses",
+    "description": "Tambien puede interesarte",
+    "restaurantCategories": [
+      {
+        "id": 1,
+        "imgUrl": "https://links.papareact.com/gn7",
+        "title": "Prueba 4",
+        "rating": 2,
+        "genre": "Mexicana",
+        "address": "",
+        "short_description": "",
+        "dishes": "",
+        "long": "",
+        "lat": ""
+      },
+      {
+        "id": 2,
+        "imgUrl": "https://links.papareact.com/gn7",
+        "title": "Prueba 5",
+        "rating": 2.4,
+        "genre": "Tailandesa",
+        "address": "",
+        "short_description": "",
+        "dishes": "",
+        "long": "",
+        "lat": ""
+      },
+      {
+        "id": 3,
+        "imgUrl": "https://links.papareact.com/gn7",
+        "title": "Prueba 6",
+        "rating": 4.3,
+        "genre": "Comida rapida",
+        "address": "",
+        "short_description": "",
+        "dishes": "",
+        "long": "",
+        "lat": ""
+      }
+    ]
+  }
+]
