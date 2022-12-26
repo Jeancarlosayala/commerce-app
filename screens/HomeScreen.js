@@ -2,6 +2,7 @@ import React, { useEffect, useLayoutEffect, useState } from "react"
 
 import { Image, SafeAreaView, Text, TextInput, View, ScrollView } from "react-native"
 import { useNavigation } from "@react-navigation/native"
+import restaurants from '../apis/restaurants.json'
 
 import { grayColor, primaryColor } from "../styles/colors";
 import { Categories, FeaturedRow } from "../components/Categories";
@@ -12,94 +13,6 @@ import {
   AdjustmentsVerticalIcon,
   MagnifyingGlassIcon
 } from 'react-native-heroicons/outline'
-const featuredCategoryItems = [
-  {
-    id: 1,
-    title: 'Sugerencias',
-    description: 'Te sugerimos',
-    restaurantCategories: [
-      {
-        id: 1,
-        imgUrl: '',
-        title: 'Prueba 1',
-        rating: '',
-        genre: '',
-        address: '',
-        short_description: '',
-        dishes: '',
-        long: '',
-        lat: ''
-      },
-      {
-        id: 2,
-        imgUrl: '',
-        title: 'Prueba 2',
-        rating: '',
-        genre: '',
-        address: '',
-        short_description: '',
-        dishes: '',
-        long: '',
-        lat: ''
-      },
-      {
-        id: 3,
-        imgUrl: '',
-        title: 'prueba 3',
-        rating: '',
-        genre: '',
-        address: '',
-        short_description: '',
-        dishes: '',
-        long: '',
-        lat: ''
-      }
-    ]
-  },
-  {
-    id: 2,
-    title: 'Intereses',
-    description: 'Tambien puede interesarte',
-    restaurantCategories: [
-      {
-        id: 1,
-        imgUrl: '',
-        title: 'Prueba 4',
-        rating: '',
-        genre: '',
-        address: '',
-        short_description: '',
-        dishes: '',
-        long: '',
-        lat: ''
-      },
-      {
-        id: 2,
-        imgUrl: '',
-        title: 'Prueba 5',
-        rating: '',
-        genre: '',
-        address: '',
-        short_description: '',
-        dishes: '',
-        long: '',
-        lat: ''
-      },
-      {
-        id: 3,
-        imgUrl: '',
-        title: 'Prueba 6',
-        rating: '',
-        genre: '',
-        address: '',
-        short_description: '',
-        dishes: '',
-        long: '',
-        lat: ''
-      }
-    ]
-  }
-]
 
 function HomeScreen() {
   const navigation = useNavigation();
@@ -144,7 +57,7 @@ function HomeScreen() {
         <Categories />
 
         {
-          featuredCategoryItems.map(({ id, title, description, restaurantCategories }) => {
+          restaurants.map(({ id, title, description, restaurantCategories }) => {
 
             return (
               <FeaturedRow
