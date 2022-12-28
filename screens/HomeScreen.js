@@ -2,7 +2,7 @@ import React, { useEffect, useLayoutEffect, useState } from "react"
 
 import { Image, SafeAreaView, Text, TextInput, View, ScrollView } from "react-native"
 import { useNavigation } from "@react-navigation/native"
-import restaurants from '../apis/restaurants.json'
+import sanityClient, { urlFor } from "../sanity";
 
 import { grayColor, primaryColor } from "../styles/colors";
 import { Categories, FeaturedRow } from "../components/Categories";
@@ -16,6 +16,8 @@ import {
 
 function HomeScreen() {
   const navigation = useNavigation();
+  const [featuredCategories, setFeaturedCategories] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -23,9 +25,29 @@ function HomeScreen() {
     })
   }, []);
 
+  useEffect(() => {
+    sanityClient.fetch(`
+      *[_type == 'featured']{
+        ...,
+        restaurants[] ->{
+          ...,
+          dishes[]->
+        },
+      }
+    `).then(res => setFeaturedCategories(res)).catch(error => console.log(error));
+
+    sanityClient.fetch(`
+      *[_type == 'category']{
+        ...,
+      }
+    `).then(res => setCategories(res)).catch(error => console.log(error));
+  }, [setFeaturedCategories, sanityClient])
+
+  // console.log(categories);
+
   return (
-    <SafeAreaView className=' pt-5'>
-      <View className='bg-white'>
+    <SafeAreaView className='bg-white pt-5'>
+      <View>
         <View className='flex-row pb-3 items-center mx-2 space-x-2'>
           <Image source={{
             uri: 'https://links.papareact.com/wru',
@@ -55,23 +77,47 @@ function HomeScreen() {
         </View>
       </View>
 
-      <ScrollView>
-        <Categories />
+        <ScrollView
+          contentContainerStyle={{
+            paddingBottom: 100,
+          }}
+          className='bg-gray-100'
+        >
 
-        {
-          restaurants.map(({ id, title, description, restaurantCategories }) => {
+          <ScrollView
+            contentContainerStyle={{
+              paddingHorizontal: 15,
+              paddingTop: 10
+            }}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+          >
+            {
+              categories.map(categories => {
+                return (
+                  <Categories
+                    key={categories._id}
+                    id={categories._id}
+                    imgUrl={urlFor(categories.image).width(200).url()}
+                    title={categories.name}
+                  />
+                )
+              })
+            }
+          </ScrollView>
 
-            return (
+          {
+            featuredCategories?.map(category => (
+              // console.log('this is a restaurant' + JSON.stringify(restaurants));
               <FeaturedRow
-                key={id}
-                title={title}
-                description={description}
-                restaurantCategories={[...restaurantCategories]}
+                key={category._id}
+                id={category._id}
+                title={category.name}
+                description={category.short_description}
               />
-            )
-          })
-        }
-      </ScrollView>
+            ))
+          }
+        </ScrollView>
     </SafeAreaView>
   )
 }
