@@ -1,55 +1,41 @@
-import { View, Text, ScrollView } from 'react-native';
-import React from 'react';
+import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { CategoryCard, RestaurantCard } from './CategoryCard';
 import { ArrowRightIcon } from 'react-native-heroicons/outline';
 import { primaryColor } from '../styles/colors';
+import sanityClient from "../sanity";
 
-export const Categories = () => {
-
-  const categoryCardItems = [
-    {
-      id: 1,
-      title: 'Test',
-      imgUrl: 'https://links.papareact.com/gn7'
-    },
-    {
-      id: 2,
-      title: 'Test',
-      imgUrl: 'https://links.papareact.com/gn7'
-    },
-    {
-      id: 3,
-      title: 'Test',
-      imgUrl: 'https://links.papareact.com/gn7'
-    },
-    {
-      id: 4,
-      title: 'Test',
-      imgUrl: 'https://links.papareact.com/gn7'
-    }
-  ]
+export const Categories = ({ imgUrl, title }) => {
 
   return (
-    <ScrollView
-      contentContainerStyle={{
-        paddingHorizontal: 15,
-        paddingTop: 10
-      }}
-      horizontal
-      showsHorizontalScrollIndicator={false}>
-
-      {
-        categoryCardItems.map(({ id, title, imgUrl }) => {
-          return (
-            <CategoryCard key={id} imgUrl={imgUrl} title={title} />
-          )
-        })
-      }
-    </ScrollView>
+    <TouchableOpacity className='relative mr-2'>
+      <Image className='w-20 h-20 rounded' source={{
+        uri: imgUrl
+      }} />
+      <Text className='absolute bottom-1 left-1 text-white font-bold'>{title}</Text>
+    </TouchableOpacity>
   )
 }
 
-export const FeaturedRow = ({ title, description, restaurantCategories }) => {
+export const FeaturedRow = ({ id, title, description, restaurantCategories }) => {
+
+  const [restaurant, setRestaurant] = useState([])
+
+  useEffect(() => {
+    sanityClient.fetch(`
+      *[_type == 'featured' && _id == $id]{
+        ...,
+        restaurants[] ->{
+          ...,
+          dishes[]->,
+          type->{
+            name
+          }
+        },
+      }[0]
+    `, { id }
+    ).then(res => setRestaurant(res?.restaurants)).catch(error => console.log(error))
+  }, [setRestaurant, sanityClient])
 
   return (
     <View>
@@ -67,7 +53,27 @@ export const FeaturedRow = ({ title, description, restaurantCategories }) => {
           paddingHorizontal: 15,
         }}
       >
-        <RestaurantCard title={title} restauranData={[...restaurantCategories]} />
+        {
+          restaurant?.map(restaurant => {
+            return (
+              <RestaurantCard
+                key={restaurant._id}
+                id={restaurant._id}
+                imgUrl={restaurant.image}
+                address={restaurant.address}
+                title={restaurant.name}
+                dishes={restaurant.dishes}
+                rating={restaurant.rating}
+                short_description={restaurant.short_description}
+                genre={restaurant.type.name}
+                long={restaurant.long}
+                lat={restaurant.lat}
+              />
+            )
+          })
+        }
+
+        {/* <RestaurantCard title={title} restauranData={[...restaurantCategories]} /> */}
       </ScrollView>
     </View>
   )
