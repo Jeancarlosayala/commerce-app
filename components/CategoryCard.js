@@ -14,7 +14,10 @@ export const RestaurantCard = ({
   genre,
   title,
   short_description,
-  dishes
+  dishes,
+  id,
+  long,
+  lat
 }) => {
 
   const navigation = useNavigation();
@@ -30,7 +33,10 @@ export const RestaurantCard = ({
             genre,
             title,
             short_description,
-            dishes
+            dishes,
+            id,
+            long,
+            lat
           })
         }}
         className='mr-3 bg-white shadow-sm'>
