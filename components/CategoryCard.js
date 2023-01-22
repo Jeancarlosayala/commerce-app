@@ -1,5 +1,7 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
+
 import { MapPinIcon, StarIcon } from 'react-native-heroicons/solid';
 import { grayColor, starColor } from '../styles/colors';
 import { urlFor } from '../sanity';
@@ -10,12 +12,34 @@ export const RestaurantCard = ({
   address,
   rating,
   genre,
-  title
+  title,
+  short_description,
+  dishes,
+  id,
+  long,
+  lat
 }) => {
+
+  const navigation = useNavigation();
 
   return (
     <View className='flex-row pt-3'>
-      <TouchableOpacity className='mr-3 bg-white shadow-sm'>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('Restaurant', {
+            imgUrl,
+            address,
+            rating,
+            genre,
+            title,
+            short_description,
+            dishes,
+            id,
+            long,
+            lat
+          })
+        }}
+        className='mr-3 bg-white shadow-sm'>
         <Image className='w-64 h-36 rounded-sm ' source={{
           uri: urlFor(imgUrl).width(200).url(),
         }} />

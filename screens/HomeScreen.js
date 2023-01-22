@@ -7,6 +7,9 @@ import sanityClient, { urlFor } from "../sanity";
 import { grayColor, primaryColor } from "../styles/colors";
 import { Categories, FeaturedRow } from "../components/Categories";
 
+import { useSelector } from "react-redux";
+import { getCurrentUser } from "../features/user";
+
 import {
   ChevronDownIcon,
   UserIcon,
@@ -14,10 +17,16 @@ import {
   MagnifyingGlassIcon
 } from 'react-native-heroicons/outline'
 
+
+
+
 function HomeScreen() {
   const navigation = useNavigation();
+
   const [featuredCategories, setFeaturedCategories] = useState([]);
   const [categories, setCategories] = useState([]);
+
+  const currentUser = useSelector(getCurrentUser);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -43,8 +52,6 @@ function HomeScreen() {
     `).then(res => setCategories(res)).catch(error => console.log(error));
   }, [setFeaturedCategories, sanityClient])
 
-  // console.log(categories);
-
   return (
     <SafeAreaView className='bg-white pt-5'>
       <View>
@@ -62,7 +69,10 @@ function HomeScreen() {
             </Text>
           </View>
 
-          <UserIcon size={35} color={primaryColor} />
+          <Text>
+            {currentUser.displayName}
+            <UserIcon size={35} color={primaryColor} />
+          </Text>
         </View>
 
         <View className='flex-row items-center space-x-2 p-2 mx-2'>
@@ -77,47 +87,47 @@ function HomeScreen() {
         </View>
       </View>
 
+      <ScrollView
+        contentContainerStyle={{
+          paddingBottom: 100,
+        }}
+        className='bg-gray-100'
+      >
+
         <ScrollView
           contentContainerStyle={{
-            paddingBottom: 100,
+            paddingHorizontal: 15,
+            paddingTop: 10
           }}
-          className='bg-gray-100'
+          horizontal
+          showsHorizontalScrollIndicator={false}
         >
-
-          <ScrollView
-            contentContainerStyle={{
-              paddingHorizontal: 15,
-              paddingTop: 10
-            }}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-          >
-            {
-              categories.map(categories => {
-                return (
-                  <Categories
-                    key={categories._id}
-                    id={categories._id}
-                    imgUrl={urlFor(categories.image).width(200).url()}
-                    title={categories.name}
-                  />
-                )
-              })
-            }
-          </ScrollView>
-
           {
-            featuredCategories?.map(category => (
-              // console.log('this is a restaurant' + JSON.stringify(restaurants));
-              <FeaturedRow
-                key={category._id}
-                id={category._id}
-                title={category.name}
-                description={category.short_description}
-              />
-            ))
+            categories.map(categories => {
+              return (
+                <Categories
+                  key={categories._id}
+                  id={categories._id}
+                  imgUrl={urlFor(categories.image).width(200).url()}
+                  title={categories.name}
+                />
+              )
+            })
           }
         </ScrollView>
+
+        {
+          featuredCategories?.map(category => (
+            // console.log('this is a restaurant' + JSON.stringify(restaurants));
+            <FeaturedRow
+              key={category._id}
+              id={category._id}
+              title={category.name}
+              description={category.short_description}
+            />
+          ))
+        }
+      </ScrollView>
     </SafeAreaView>
   )
 }
