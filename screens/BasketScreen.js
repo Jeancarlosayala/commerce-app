@@ -108,7 +108,7 @@ const BasketScreen = () => {
           </View>
 
           <TouchableOpacity
-            onPress={() => navigation.navigate('PreparingOrder')}
+            onPress={() => navigation.navigate('Payments')}
             className='bg-[#9B59B6] p-3 items-center rounded-md'>
             <Text className='text-white font-bold text-lg'>Realizar Pedido</Text>
           </TouchableOpacity>
