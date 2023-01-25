@@ -1,4 +1,3 @@
-import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import { db, signWithEmail } from '../utils/firebase';
@@ -6,7 +5,12 @@ import { useDispatch } from 'react-redux';
 import { setCurrentUser } from '../features/user';
 import { collection, onSnapshot } from 'firebase/firestore';
 
-const PaymentScreen = () => {
+import { View, Text, TextInput, TouchableOpacity, Alert, ImageBackground } from 'react-native'
+import * as Animatable from 'react-native-animatable'
+
+import Bank from '../assets/bank.jpeg'
+
+const BankIoScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [userId, setUserId] = useState(null);
@@ -54,31 +58,71 @@ const PaymentScreen = () => {
   });
 
   return (
-    <View className='w-full h-full'>
-      <View className='m-auto'>
-        <View className='space-y-3 mb-4 transition-all'>
-          <TextInput
-            onChangeText={(text) => setEmail(text)}
-            name='email'
-            className='border border-gray-400 p-4 mx-3 rounded-sm'
-            placeholder='Correo'
-            keyboardType='email-address'
-          />
+    <View className='w-full h-full bg-[#006DE9]'>
+      <ImageBackground source={Bank} className='w-full h-[52%] absolute opacity-[0.3]' />
 
-          <TextInput
-            onChangeText={(text) => setPassword(text)}
-            name='password'
-            className='border border-gray-400 p-4 mx-3 rounded-sm'
-            placeholder='Contraseña'
-            secureTextEntry
-          />
-          <TouchableOpacity onPress={handleLogin} className='bg-[#006DE9] p-3 mx-16 items-center rounded-md'>
-            <Text className='text-white font-bold'>Iniciar Sesion</Text>
-          </TouchableOpacity>
+      <Animatable.View
+        animation='slideInUp'
+        iterationCount={1}
+        className='mt-10 ml-4'>
+        <Animatable.Text
+          animation='slideInUp'
+          iterationCount={1}
+          className='text-3xl font-bold text-white'>Hola!</Animatable.Text>
+        <Animatable.Text
+          animation='slideInUp'
+          iterationCount={1}
+          className='text-3xl text-white font-bold mt-2'>Bienvenido a BankIo</Animatable.Text>
+
+        <Animatable.Text
+          animation='slideInUp'
+          iterationCount={1}
+          className='text-white text-sm font-medium'>
+          ¡Difiere tus compras a meses sin intereses!
+        </Animatable.Text>
+      </Animatable.View>
+
+      <Animatable.View
+        animation='slideInUp'
+        iterationCount={1}
+        className='bg-white absolute w-full h-[75%] bottom-0 rounded-t-[25px] pt-20'>
+        <Text className='font-normal text-xl text-center mb-5'>Inicia sesion</Text>
+
+        <View className='space-y-3 mb-4'>
+          <View className='px-4'>
+            <Text className='font-medium text-lg mb-2'>Correo</Text>
+            <TextInput
+              onChangeText={(text) => setEmail(text)}
+              name='email'
+              className='p-4 rounded-md shadow-sm bg-white'
+              placeholder='Correo'
+              keyboardType='email-address'
+            />
+          </View>
+
+          <View className='px-4 mb-2'>
+            <Text className='font-medium text-lg mb-2'>Contraseña</Text>
+            <TextInput
+              onChangeText={(text) => setPassword(text)}
+              name='password'
+              className='p-4 rounded-md shadow-sm bg-white'
+              placeholder='Contraseña'
+              secureTextEntry
+            />
+          </View>
+
+          <Text className='text-right px-4 text-[#006DE9]'>¿Olvidaste tu Contraseña?</Text>
+
+          <View className='pt-5'>
+            <TouchableOpacity onPress={handleLogin}
+              className='bg-[#006DE9] p-3 mx-16 items-center rounded-md'>
+              <Text className='text-white font-bold'>Iniciar Sesion</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      </Animatable.View>
     </View>
   )
 }
 
-export default PaymentScreen
+export default BankIoScreen
