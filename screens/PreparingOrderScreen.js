@@ -4,14 +4,47 @@ import { useNavigation } from '@react-navigation/native'
 import { View, Text, TouchableOpacity, SafeAreaView } from 'react-native'
 
 import * as Animatable from 'react-native-animatable'
+import { useSelector } from 'react-redux'
+import { getCurrentUser } from '../features/user'
+import { selectBasketTotal } from '../features/basket'
+import { executeTransfer } from '../utils/firebase'
 
 const PreparingOrderScreen = () => {
   const navigation = useNavigation();
+  const userInformation = useSelector(getCurrentUser)
+  const subTotal = useSelector(selectBasketTotal);
+  const IVA = subTotal * 0.05;
+  const delivery = subTotal * 0.02;
+  const total = subTotal + IVA + delivery;
+  const userId = userInformation.uid;
+  const newQuantityBalanceUser = +userInformation.balance - total;
+
+  const uuid = () => {
+    var dt = new Date().getTime();
+    var uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+      /[xy]/g,
+      function (c) {
+        var r = (dt + Math.random() * 16) % 16 | 0;
+        dt = Math.floor(dt / 16);
+        return (c === "x" ? r : (r & 0x3) | 0x8).toString(16);
+      }
+    );
+    return uuid;
+  };
 
   useEffect(() => {
-    setTimeout(() => {
-      navigation.navigate('Delivery');
-    }, 5000);
+    if (userInformation) {
+      userInformation.balance < total ? null : executeTransfer(userId, newQuantityBalanceUser, uuid(), total);
+
+      userInformation.balance < total ? (
+        setTimeout(() => {
+          navigation.navigate('PaymentError')
+        }, 5000)
+      ) : setTimeout(() => {
+        navigation.navigate('PaymentSuccess')
+      }, 5000);
+    }
+
   }, [])
 
   return (
