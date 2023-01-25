@@ -9,6 +9,7 @@ import RestaurantScreen from './screens/RestaurantScreen';
 import BasketScreen from './screens/BasketScreen';
 import PreparingOrderScreen from './screens/PreparingOrderScreen';
 import PaymentScreen from './screens/PaymentScreen';
+import BankIoScreen from './screens/BankioScreen';
 
 
 const Stack = createNativeStackNavigator();
@@ -19,13 +20,19 @@ export default function App() {
     <NavigationContainer>
       <Provider store={store}>
         <Stack.Navigator>
+
+          <Stack.Screen name='Home' component={HomeScreen} />
+          <Stack.Screen name='Restaurant' component={RestaurantScreen} />
+          <Stack.Screen name='Basket' component={BasketScreen}
+            options={{
+              presentation: 'modal',
+              headerShown: false
+            }} />
           <Stack.Screen name='Payments' component={PaymentScreen} options={{
             presentation: 'fullScreenModal',
             headerShown: false
           }} />
-          <Stack.Screen name='Home' component={HomeScreen} />
-          <Stack.Screen name='Restaurant' component={RestaurantScreen} />
-          <Stack.Screen name='Basket' component={BasketScreen}
+          <Stack.Screen name='BankIo' component={BankIoScreen}
             options={{
               presentation: 'modal',
               headerShown: false
@@ -34,6 +41,7 @@ export default function App() {
             presentation: 'fullScreenModal',
             headerShown: false
           }} />
+
         </Stack.Navigator>
       </Provider>
     </NavigationContainer>

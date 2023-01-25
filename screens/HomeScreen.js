@@ -7,9 +7,6 @@ import sanityClient, { urlFor } from "../sanity";
 import { grayColor, primaryColor } from "../styles/colors";
 import { Categories, FeaturedRow } from "../components/Categories";
 
-import { useSelector } from "react-redux";
-import { getCurrentUser } from "../features/user";
-
 import {
   ChevronDownIcon,
   UserIcon,
@@ -25,8 +22,6 @@ function HomeScreen() {
 
   const [featuredCategories, setFeaturedCategories] = useState([]);
   const [categories, setCategories] = useState([]);
-
-  const currentUser = useSelector(getCurrentUser);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -70,7 +65,6 @@ function HomeScreen() {
           </View>
 
           <Text>
-            {currentUser.displayName}
             <UserIcon size={35} color={primaryColor} />
           </Text>
         </View>
