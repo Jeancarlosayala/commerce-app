@@ -6,6 +6,7 @@ import { setCurrentUser } from '../features/user';
 import { collection, onSnapshot } from 'firebase/firestore';
 
 import { View, Text, TextInput, TouchableOpacity, Alert, ImageBackground } from 'react-native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import * as Animatable from 'react-native-animatable'
 
 import Bank from '../assets/bank.jpeg'
@@ -52,7 +53,7 @@ const BankIoScreen = () => {
           cardNumber: newDocs[0].cardNumber,
           uid: newDocs[0].uid
         })));
-        navigation.navigate('Home');
+        navigation.navigate('PreparingOrder');
       });
     }
   });
@@ -86,40 +87,42 @@ const BankIoScreen = () => {
         animation='slideInUp'
         iterationCount={1}
         className='bg-white absolute w-full h-[75%] bottom-0 rounded-t-[25px] pt-20'>
-        <Text className='font-normal text-xl text-center mb-5'>Inicia sesion</Text>
 
-        <View className='space-y-3 mb-4'>
-          <View className='px-4'>
-            <Text className='font-medium text-lg mb-2'>Correo</Text>
-            <TextInput
-              onChangeText={(text) => setEmail(text)}
-              name='email'
-              className='p-4 rounded-md shadow-sm bg-white'
-              placeholder='Correo'
-              keyboardType='email-address'
-            />
+        <KeyboardAwareScrollView>
+          <Text className='font-normal text-xl text-center mb-5'>Inicia sesion</Text>
+          <View className='space-y-3 mb-4'>
+            <View className='px-4'>
+              <Text className='font-medium text-lg mb-2'>Correo</Text>
+              <TextInput
+                onChangeText={(text) => setEmail(text)}
+                name='email'
+                className='p-4 rounded-md shadow-sm bg-white'
+                placeholder='Correo'
+                keyboardType='email-address'
+              />
+            </View>
+
+            <View className='px-4 mb-2'>
+              <Text className='font-medium text-lg mb-2'>Contraseña</Text>
+              <TextInput
+                onChangeText={(text) => setPassword(text)}
+                name='password'
+                className='p-4 rounded-md shadow-sm bg-white'
+                placeholder='Contraseña'
+                secureTextEntry
+              />
+            </View>
+
+            <Text className='text-right px-4 text-[#006DE9]'>¿Olvidaste tu Contraseña?</Text>
+
+            <View className='pt-5'>
+              <TouchableOpacity onPress={handleLogin}
+                className='bg-[#006DE9] p-3 mx-16 items-center rounded-md'>
+                <Text className='text-white font-bold'>Iniciar Sesion</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-
-          <View className='px-4 mb-2'>
-            <Text className='font-medium text-lg mb-2'>Contraseña</Text>
-            <TextInput
-              onChangeText={(text) => setPassword(text)}
-              name='password'
-              className='p-4 rounded-md shadow-sm bg-white'
-              placeholder='Contraseña'
-              secureTextEntry
-            />
-          </View>
-
-          <Text className='text-right px-4 text-[#006DE9]'>¿Olvidaste tu Contraseña?</Text>
-
-          <View className='pt-5'>
-            <TouchableOpacity onPress={handleLogin}
-              className='bg-[#006DE9] p-3 mx-16 items-center rounded-md'>
-              <Text className='text-white font-bold'>Iniciar Sesion</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+        </KeyboardAwareScrollView>
       </Animatable.View>
     </View>
   )
