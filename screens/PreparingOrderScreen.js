@@ -12,13 +12,7 @@ import { executeTransfer } from '../utils/firebase'
 const PreparingOrderScreen = () => {
   const navigation = useNavigation();
   const userInformation = useSelector(getCurrentUser)
-  const subTotal = useSelector(selectBasketTotal);
-  const IVA = subTotal * 0.05;
-  const delivery = subTotal * 0.02;
-  const total = subTotal + IVA + delivery;
-  const userId = userInformation.uid;
-  const newQuantityBalanceUser = +userInformation.balance - total;
-
+  
   const uuid = () => {
     var dt = new Date().getTime();
     var uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
@@ -32,10 +26,16 @@ const PreparingOrderScreen = () => {
     return uuid;
   };
 
-  useEffect(() => {
-    if (userInformation) {
-      userInformation.balance < total ? null : executeTransfer(userId, newQuantityBalanceUser, uuid(), total);
+  if (userInformation) {
+    const subTotal = useSelector(selectBasketTotal);
+    const IVA = subTotal * 0.05;
+    const delivery = subTotal * 0.02;
+    const total = subTotal + IVA + delivery;
+    const userId = userInformation.uid;
+    const newQuantityBalanceUser = +userInformation.balance - total;
 
+    useEffect(() => {
+      userInformation.balance < total ? null : executeTransfer(userId, newQuantityBalanceUser, uuid(), total);
       userInformation.balance < total ? (
         setTimeout(() => {
           navigation.navigate('PaymentError')
@@ -43,9 +43,12 @@ const PreparingOrderScreen = () => {
       ) : setTimeout(() => {
         navigation.navigate('PaymentSuccess')
       }, 5000);
-    }
-
-  }, [])
+    }, [])
+  } else {
+    setTimeout(() => {
+      navigation.navigate('PaymentSuccess')
+    }, 5000)
+  }
 
   return (
     <SafeAreaView className='bg-[#9B59B6] flex-1 justify-center items-center'>
@@ -55,7 +58,6 @@ const PreparingOrderScreen = () => {
         iterationCount={1}
         className='h-96 w-96'
       />
-
       <Animatable.Text
         animation='slideInUp'
         iterationCount={1}
