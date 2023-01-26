@@ -23,11 +23,14 @@ export const basket = createSlice({
       }
 
       state.items = newBasket;
+    },
+    deleteBasket: (state, action) =>{
+      state.items = [];
     }
   }
 })
 
-export const { addItemBasket, removeItemBasket } = basket.actions;
+export const { addItemBasket, removeItemBasket, deleteBasket } = basket.actions;
 
 export const selectItemBasket = state => state.basket.items;
 export const selectItemBasketId = (state, _id) => state.basket.items.filter(item => item._id === _id)
