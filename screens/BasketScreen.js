@@ -6,7 +6,7 @@ import { removeItemBasket, selectBasketTotal, selectItemBasket } from '../featur
 import { View, Text, SafeAreaView, ScrollView, Image, TouchableOpacity } from 'react-native'
 import { urlFor } from '../sanity'
 import Currency from 'react-currency-formatter'
-import { MinusCircleIcon, PlusCircleIcon } from 'react-native-heroicons/solid'
+import { XCircleIcon } from 'react-native-heroicons/solid'
 import { useNavigation } from '@react-navigation/native'
 
 const BasketScreen = () => {
@@ -52,6 +52,12 @@ const BasketScreen = () => {
                   }}
                   className='flex-row items-center bg-white py-2 px-5 space-x-3 border border-gray-200 mb-7 mx-3 rounded-md'
                   key={key}>
+                  <TouchableOpacity
+                    className='absolute right-2 top-3'
+                    onPress={() => dispatch(removeItemBasket({ _id: key }))}>
+                    <XCircleIcon size={25} color='red' />
+                  </TouchableOpacity>
+
                   <Image
                     className='w-20 h-20'
                     source={{
@@ -59,18 +65,7 @@ const BasketScreen = () => {
                     }} />
                   <View className='flex-col flex-1'>
                     <Text className='font-bold'>{items[0]?.name}</Text>
-
-                    <View className='flex-row items-center space-x-2'>
-                      <TouchableOpacity onPress={() => dispatch(removeItemBasket({ _id: key }))}>
-                        <MinusCircleIcon size={25} color='#9B59B6' />
-                      </TouchableOpacity>
-
-                      <Text className='font-bold text-lg'>{items.length}</Text>
-
-                      <TouchableOpacity>
-                        <PlusCircleIcon color='#9B59B6' size={25} />
-                      </TouchableOpacity>
-                    </View>
+                    <Text className='font-bold text-lg'>{items.length}</Text>
                   </View>
                   <Text className='font-bold'>
                     <Currency quantity={items[0]?.price} />

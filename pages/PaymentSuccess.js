@@ -2,6 +2,8 @@ import { View, Text, StyleSheet, Animated, TouchableOpacity } from 'react-native
 import React, { useEffect, useRef } from 'react'
 import { CheckIcon } from 'react-native-heroicons/solid'
 import { useNavigation } from '@react-navigation/native'
+import { useDispatch } from 'react-redux'
+import { deleteBasket } from '../features/basket'
 
 const PaymentSuccess = () => {
   const progress = useRef(new Animated.Value(0.5)).current
@@ -9,12 +11,18 @@ const PaymentSuccess = () => {
   const opacityAlert = useRef(new Animated.Value(0)).current
 
   const navigation = useNavigation()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     Animated.spring(progress, { toValue: 1, useNativeDriver: true, }).start()
     Animated.timing(scale, { toValue: 10, useNativeDriver: true, duration: 600 }).start()
     Animated.timing(opacityAlert, { toValue: 1, useNativeDriver: true, duration: 1000 }).start()
   }, [])
+
+  const backHome = () => {
+    dispatch(deleteBasket())
+    navigation.navigate('Home')
+  }
 
   return (
     <View style={styles.container}>
@@ -50,7 +58,7 @@ const PaymentSuccess = () => {
         className='rounded-full p-5 items-center justify-center absolute bottom-[20%]'>
         <Text className='text-white font-bold text-3xl'>Compra Exitosa</Text>
         <View className='mt-4'>
-          <TouchableOpacity onPress={() => navigation.navigate('Home')} className='border border-white p-2 rounded-xl'>
+          <TouchableOpacity onPress={backHome} className='border border-white p-2 rounded-xl'>
             <Text className='text-white font-bold text-xl text-center'>Volver al inicio</Text>
           </TouchableOpacity>
         </View>
